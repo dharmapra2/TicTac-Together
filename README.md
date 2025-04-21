@@ -1,2 +1,2 @@
 # TicTac-Together
-asds
+This is pratice project for web socket
