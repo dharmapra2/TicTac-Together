@@ -2,19 +2,24 @@
 "use client";
 
 import { redirect } from "next/navigation";
+import { useTransition } from "react";
 
 export default function Page() {
+  const [isPending, startTransition] = useTransition();
+
   async function handleSubmit(formData: FormData) {
     // "use server";
     const username = formData.get("username");
     console.log(username);
 
-    // Redirect after processing
-    redirect("/dashboard");
+    startTransition(() => {
+      // Redirect after processing
+      redirect("/dashboard");
+    });
   }
 
   return (
-    <section className="bg-primary h-[90%] w-[90%] text-white rounded-xl p-8 flex justify-center items-center flex-col gap-6 shadow-2xl">
+    <section className="bg-card h-[90%] w-[90%] text-white rounded-xl p-8 flex justify-center items-center flex-col gap-6 shadow-2xl">
       <h2 className="text-4xl font-extrabold tracking-tight mb-2">
         Welcome to Tic-Tac-Toe
       </h2>
@@ -31,9 +36,10 @@ export default function Page() {
         />
         <button
           type="submit"
+          disabled={isPending}
           className="h-12 rounded-xl bg-secondary hover:bg-secondary/80 transition-all font-medium cursor-pointer"
         >
-          Get Started
+          {isPending ? "Loading..." : "Get Started"}
         </button>
       </form>
     </section>

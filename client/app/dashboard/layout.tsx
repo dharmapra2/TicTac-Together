@@ -1,3 +1,4 @@
+import Sidebar from "@/components/Sidebar";
 import React from "react";
 
 export default function DashBoardLayout({
@@ -10,15 +11,12 @@ export default function DashBoardLayout({
       className={`h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6`}
     >
       {/* left section */}
-      <section className="bg-primary grow w-[75%] h-full rounded-md">{children}</section>
+      <section className="bg-card grow w-[75%] h-full rounded-md">
+        {children}
+      </section>
 
       {/* Right section */}
-      <nav className="bg-primary grow-0 w-[25%] h-full rounded-md">
-        name asds
-        <button type="button">create game</button>
-        <button type="button">create</button>
-        <p>in progress</p>
-      </nav>
+      <Sidebar />
     </main>
   );
 }

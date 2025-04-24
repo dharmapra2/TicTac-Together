@@ -13,7 +13,8 @@ body {
 }
 @theme {
   --color-primary: #c95792;
-  --color-seconday: #3d365c;
+  --color-seconday: #55238a;
+  --color-card: #3b0a60;
   --color-background: #ffffff;
   --color-foreground: #171717;
   --font-sans: var(--font-geist-sans);
