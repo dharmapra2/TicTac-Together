@@ -50,22 +50,11 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* Game Actions */}
-      <section className="bg-seconday p-4 rounded-xl shadow-md flex flex-col gap-4">
-        <h5 className="text-xl font-semibold">Game Actions</h5>
-        <button className="bg-orange-400 hover:bg-orange-500 transition-colors text-white py-2 rounded-lg text-sm font-medium">
-          Create Game
-        </button>
-        <button className="bg-gray-700 hover:bg-gray-600 transition-colors text-white py-2 rounded-lg text-sm font-medium">
-          Join Random Game
-        </button>
-      </section>
-
       {/* 🔔 Invites Section - only visible on small/medium screens */}
       <section className="bg-seconday p-4 rounded-xl shadow-md hidden laptop:flex flex-col gap-2">
         <h5 className="text-xl font-semibold mb-2">Invites</h5>
         {invites.length > 0 ? (
-          <ul className="space-y-2 text-sm text-gray-300 h-[6em] overflow-y-auto">
+          <ul className="space-y-2 text-sm text-gray-300 max-h-[13em] overflow-y-auto pr-1">
             {invites.map((invite, index) => (
               <li key={index} className="flex justify-between items-center">
                 <span>
@@ -83,9 +72,9 @@ export default function DashboardPage() {
       </section>
 
       {/* Recent Activity Feed */}
-      <section className="bg-seconday p-4 rounded-xl shadow-md flex flex-col gap-2">
+      <section className="bg-seconday p-4 rounded-xl shadow-md flex flex-col gap-1">
         <h5 className="text-xl font-semibold mb-2">Recent Activity</h5>
-        <ul className="text-sm text-gray-300 list-disc pl-5">
+        <ul className="text-sm text-gray-300 list-disc max-h-[13em] pl-5 overflow-y-auto pr-1">
           {recentActivities.map((activity, idx) => (
             <li key={idx}>{activity}</li>
           ))}

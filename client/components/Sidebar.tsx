@@ -10,9 +10,9 @@ export default function Sidebar() {
   const inProgressGames = ["#Game123", "#Game456"];
 
   return (
-    <aside className="bg-card p-4 w-[25%] h-full rounded-md flex flex-col text-white shadow-lg">
+    <aside className="bg-card p-4 w-[25%] h-full rounded-md flex flex-col text-white shadow-lg gap-6">
       {/* Player Info */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4">
         <Image
           src="/boy-profile.png"
           alt="Profile"
@@ -25,13 +25,23 @@ export default function Sidebar() {
           <p className="text-sm text-gray-300">Player ID: #98213</p>
         </div>
       </div>
+      {/* Game Action */}
+      <section className="bg-seconday p-4 rounded-xl shadow-md flex flex-col gap-4">
+        <h5 className="text-xl font-semibold">Game Actions</h5>
+        <button className="bg-orange-400 hover:bg-orange-500 transition-colors text-white py-2 rounded-lg text-sm font-medium">
+          Create Game
+        </button>
+        <button className="bg-gray-700 hover:bg-gray-600 transition-colors text-white py-2 rounded-lg text-sm font-medium">
+          Join Random Game
+        </button>
+      </section>
 
       {/* Online Players */}
-      <div className="flex flex-col gap-4 grow overflow-auto pr-2">
+      <div className="flex flex-col gap-4 grow">
         {/* Available Players */}
         <section>
           <h5 className="text-md font-bold mb-2">Available Players</h5>
-          <ul className="text-sm space-y-1 text-gray-300">
+          <ul className="text-sm space-y-1 text-gray-300 max-h-[8em] overflow-y-auto pr-2">
             {availablePlayers.map((player) => (
               <li key={player} className="flex justify-between">
                 {player}
@@ -46,7 +56,7 @@ export default function Sidebar() {
         {/* In-Game Players */}
         <section>
           <h5 className="text-md font-bold mt-4 mb-2">In-Game Players</h5>
-          <ul className="text-sm space-y-1 text-gray-300">
+          <ul className="text-sm space-y-1 text-gray-300 max-h-[8em] overflow-y-auto pr-2">
             {inGamePlayers.map((player) => (
               <li key={player} className="flex justify-between">
                 {player}
@@ -61,7 +71,7 @@ export default function Sidebar() {
         {/* Games Section */}
         <section>
           <h5 className="text-md font-bold mt-4 mb-2">Games</h5>
-          <ul className="text-sm space-y-1 text-gray-300">
+          <ul className="text-sm space-y-1 text-gray-300 max-h-[8em] overflow-y-auto pr-2">
             {waitingGames.map((game) => (
               <li key={game.id} className="flex justify-between">
                 <span>{game.host} waiting</span>
@@ -83,7 +93,7 @@ export default function Sidebar() {
       </div>
 
       {/* Player Stats */}
-      <div className="pt-4 border-t border-gray-700 text-sm text-gray-300 mt-4">
+      <div className="pt-4 border-t border-gray-700 text-sm text-gray-300">
         <p>
           Wins: <span className="text-white font-semibold">5</span>
         </p>
