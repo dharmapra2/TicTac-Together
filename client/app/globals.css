@@ -19,6 +19,13 @@ body {
   --color-foreground: #171717;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --breakpoint-phone: 30rem; /* 480px - Small phones */
+  --breakpoint-tablet: 40rem; /* 640px - Large phones / small tablets */
+  --breakpoint-medium-tablet: 48rem; /* 768px - iPad portrait / tablets */
+  --breakpoint-laptop: 64rem; /* 1024px - Laptops / landscape tablets */
+  --breakpoint-desktop: 80rem; /* 1280px - Standard desktops */
+  --breakpoint-widescreen: 96rem; /* 1536px - Large desktop monitors */
 }
 
 /* @media (prefers-color-scheme: dark) {

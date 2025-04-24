@@ -23,7 +23,7 @@ export default function DashboardPage() {
     <section className="text-white h-full w-full p-6 rounded-xl shadow-xl flex flex-col gap-6 relative">
       {/* 🔔 Notification Icon for Invite Modal */}
       <button
-        className="absolute top-6 right-6 hidden md:block p-2 bg-card rounded-full hover:bg-gray-700 transition"
+        className="block laptop:hidden absolute top-6 right-6 p-2 bg-card rounded-full hover:bg-gray-700 transition"
         onClick={() => setShowModal(true)}
       >
         <Bell className="w-6 h-6 text-orange-400" />
@@ -44,7 +44,7 @@ export default function DashboardPage() {
           <h4 className="text-2xl font-semibold">Alex</h4>
           <p className="text-sm text-gray-300">Player ID: #98213</p>
           <p className="text-sm text-gray-400 mt-1">
-            Wins: <span className="text-white font-bold">5</span> | Losses:{" "}
+            Wins: <span className="text-white font-bold">5</span> | Losses:
             <span className="text-white font-bold">3</span>
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function DashboardPage() {
       </section>
 
       {/* 🔔 Invites Section - only visible on small/medium screens */}
-      <section className="bg-seconday p-4 rounded-xl shadow-md flex lg:hidden flex-col gap-2">
+      <section className="bg-seconday p-4 rounded-xl shadow-md hidden laptop:flex flex-col gap-2">
         <h5 className="text-xl font-semibold mb-2">Invites</h5>
         {invites.length > 0 ? (
           <ul className="space-y-2 text-sm text-gray-300 h-[6em] overflow-y-auto">
@@ -113,7 +113,7 @@ export default function DashboardPage() {
                 {invites.map((invite, index) => (
                   <li key={index} className="flex justify-between items-center">
                     <span>
-                      {invite.from} invited you to{" "}
+                      {invite.from} invited you to
                       <strong>{invite.gameId}</strong>
                     </span>
                     <button className="text-orange-400 hover:underline text-xs">
