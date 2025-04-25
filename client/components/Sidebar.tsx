@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GameActions from "@/components/GameActions";
 
 export default function Sidebar() {
   const availablePlayers = ["Sam", "Tina", "John"];
@@ -26,15 +27,7 @@ export default function Sidebar() {
         </div>
       </div>
       {/* Game Action */}
-      <section className="bg-seconday p-4 rounded-xl shadow-md flex flex-col gap-4">
-        <h5 className="text-xl font-semibold">Game Actions</h5>
-        <button className="bg-orange-400 hover:bg-orange-500 transition-colors text-white py-2 rounded-lg text-sm font-medium">
-          Create Game
-        </button>
-        <button className="bg-gray-700 hover:bg-gray-600 transition-colors text-white py-2 rounded-lg text-sm font-medium">
-          Join Random Game
-        </button>
-      </section>
+      <GameActions />
 
       {/* Online Players */}
       <div className="flex flex-col gap-4 grow">
