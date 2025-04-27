@@ -14,7 +14,9 @@ export default function DashBoardLayout({
       {/* left section */}
       <section className="bg-card grow w-[75%] h-full rounded-md">
         <section className="text-white h-full w-full p-6 rounded-xl shadow-xl flex flex-col gap-6 relative">
-          <h3 className="text-4xl text-center font-bold">Welcome, Alex 👋</h3>
+          <h3 className="text-4xl text-center font-bold">
+            Welcome, Alex <span className="">👋</span>
+          </h3>
           {/* Player Card */}
           <section className="bg-seconday p-4 rounded-xl flex items-center gap-4 shadow-md">
             <Image

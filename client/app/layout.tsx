@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+// import PreventRefreshProvider from "@/utils/hooks/PreventRefreshProvider";
 
 export const metadata: Metadata = {
   title: "Tic-Tac-Toe",
@@ -16,7 +17,9 @@ export default function RootLayout({
       <body
         className={`antialiased bg-seconday flex justify-center items-center`}
       >
+        {/* <PreventRefreshProvider shouldPrevent={true}> */}
         {children}
+        {/* </PreventRefreshProvider> */}
       </body>
     </html>
   );
