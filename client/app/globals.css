@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Mystery+Quest&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -26,6 +27,12 @@ body {
   --breakpoint-laptop: 64rem; /* 1024px - Laptops / landscape tablets */
   --breakpoint-desktop: 80rem; /* 1280px - Standard desktops */
   --breakpoint-widescreen: 96rem; /* 1536px - Large desktop monitors */
+}
+
+.mystery-quest-regular {
+  font-family: "Cherry Bomb One", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
 
 ::-webkit-scrollbar {
