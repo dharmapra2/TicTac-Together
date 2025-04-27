@@ -1,6 +1,6 @@
-import Sidebar from "@/components/Sidebar";
 import Image from "next/image";
 import React from "react";
+import GameSideBar from "@/components/Game/GameSideBar";
 
 export default function GameLayout({
   children,
@@ -29,7 +29,7 @@ export default function GameLayout({
               <Image
                 src="/multi-player.png"
                 alt="Multiplayer background"
-                loading="lazy"
+                loading="eager"
                 width={230}
                 height={230}
                 className="w-11/12 h-auto bg-blend-color-dodge"
@@ -72,7 +72,7 @@ export default function GameLayout({
       </section>
 
       {/* Right section */}
-      <Sidebar />
+      <GameSideBar />
     </main>
   );
 }
