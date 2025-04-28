@@ -17,9 +17,11 @@ export default function RootLayout({
       <body
         className={`antialiased bg-seconday flex justify-center items-center`}
       >
-        {/* <PreventRefreshProvider shouldPrevent={true}> */}
-        {children}
-        {/* </PreventRefreshProvider> */}
+        <main className="h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6">
+          {/* <PreventRefreshProvider shouldPrevent={true}> */}
+          {children}
+          {/* </PreventRefreshProvider> */}
+        </main>
       </body>
     </html>
   );

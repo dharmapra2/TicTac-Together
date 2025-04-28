@@ -8,9 +8,7 @@ export default function DashBoardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main
-      className={`h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6`}
-    >
+    <React.Fragment>
       {/* left section */}
       <section className="bg-card grow w-[75%] h-full rounded-md">
         <section className="text-white h-full w-full p-6 rounded-xl shadow-xl flex flex-col gap-6 relative">
@@ -43,6 +41,6 @@ export default function DashBoardLayout({
 
       {/* Right section */}
       <Sidebar />
-    </main>
+    </React.Fragment>
   );
 }
