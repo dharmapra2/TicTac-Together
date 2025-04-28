@@ -1,23 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { useState, useRef } from "react";
 
 function Page() {
-  const defaultCellValue = [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""],
-  ];
+  // Change this for 3x3, 5x5, 10x10 board
+  const N = 3;
+
+  const defaultCellValue = Array.from({ length: N }, () => Array(N).fill(""));
 
   const [turn, setTurn] = useState(true); // true => X's turn
   const [cells, setCells] = useState(defaultCellValue);
   const [winner, setWinner] = useState<string | null>(null);
 
-  // DSA optimization: counters
-  const rows = React.useRef<number[]>([0, 0, 0]);
-  const cols = React.useRef<number[]>([0, 0, 0]);
-  const diagonal = React.useRef<number>(0);
-  const antiDiagonal = React.useRef<number>(0);
-  const moveCount = React.useRef<number>(0);
+  const moveCount = useRef<number>(0);
+  const rows = useRef<number[]>(Array(N).fill(0));
+  const cols = useRef<number[]>(Array(N).fill(0));
+  const diagonal = useRef<number>(0);
+  const antiDiagonal = useRef<number>(0);
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (winner) return;
@@ -26,8 +25,9 @@ function Page() {
 
     if (target.dataset.index) {
       const index = parseInt(target.dataset.index);
-      const row = Math.floor(index / 3);
-      const col = index % 3;
+
+      const row = Math.floor(index / N);
+      const col = index % N;
 
       if (cells[row][col] !== "") {
         console.log("Cell already filled!");
@@ -45,41 +45,36 @@ function Page() {
       rows.current[row] += playerValue;
       cols.current[col] += playerValue;
       if (row === col) diagonal.current += playerValue;
-      if (row + col === 2) antiDiagonal.current += playerValue;
+      if (row + col === N - 1) antiDiagonal.current += playerValue;
 
-      console.log(index, rows, cols, diagonal, antiDiagonal);
-
-      // Check if current move wins
       if (
-        Math.abs(rows.current[row]) === 3 ||
-        Math.abs(cols.current[col]) === 3 ||
-        Math.abs(diagonal.current) === 3 ||
-        Math.abs(antiDiagonal.current) === 3
+        Math.abs(rows.current[row]) === N ||
+        Math.abs(cols.current[col]) === N ||
+        Math.abs(diagonal.current) === N ||
+        Math.abs(antiDiagonal.current) === N
       ) {
         setWinner(turn ? "X" : "O");
         console.log(`${turn ? "X" : "O"} wins!`);
         return;
       }
 
-      // Check draw
-      if (moveCount.current + 1 === 9) {
+      if (moveCount.current === N * N) {
         setWinner("Draw");
         console.log("Game Draw!");
         return;
       }
 
-      // Switch turn
       setTurn((prev) => !prev);
     }
   };
 
   const handleReset = () => {
-    setCells(defaultCellValue);
+    setCells(Array.from({ length: N }, () => Array(N).fill("")));
     setWinner(null);
     setTurn(true);
     moveCount.current = 0;
-    rows.current = [0, 0, 0];
-    cols.current = [0, 0, 0];
+    rows.current = Array(N).fill(0);
+    cols.current = Array(N).fill(0);
     diagonal.current = 0;
     antiDiagonal.current = 0;
   };
@@ -87,8 +82,8 @@ function Page() {
   console.log("Rendered");
 
   return (
-    <section className="flex flex-col items-center justify-evenly h-[70%]">
-      <p className="h-9 text-2xl">
+    <section className="flex flex-col items-center justify-evenly h-[90vh]">
+      <p className="h-9 text-2xl mb-4">
         {winner
           ? winner === "Draw"
             ? "It's a Draw!"
@@ -99,7 +94,8 @@ function Page() {
       </p>
 
       <section
-        className="h-auto grid grid-cols-3 gap-2 laptop:gap-2 text-5xl text-center font-medium text-secondary text-gray-500"
+        className={`grid grid-cols-${N} gap-2 text-5xl text-center font-medium text-secondary text-gray-500`}
+        style={{ gridTemplateColumns: `repeat(${N}, minmax(50px, 1fr))` }}
         onClick={handleClick}
       >
         {cells.flat().map((cell, index) => (
@@ -107,9 +103,24 @@ function Page() {
             key={index}
             disabled={cell || winner ? true : false}
             data-index={index}
-            className="size-18 laptop:size-25 flex items-center justify-center border bg-white border-gray-400 disabled:cursor-not-allowed cursor-pointer"
+            className={` ${
+              N == 3 ? "size-18 laptop:size-25" : "aspect-square text-3xl"
+            } flex items-center justify-center border bg-white border-gray-400 disabled:cursor-not-allowed cursor-pointer rounded-md relative overflow-hidden`}
           >
-            {cell}
+            {/* Animate presence of X or O */}
+            <AnimatePresence>
+              {cell && (
+                <motion.span
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.5, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  {cell}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         ))}
       </section>
