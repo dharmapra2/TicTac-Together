@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import GameSideBar from "@/components/Game/GameSideBar";
+import PlayerCard from "@/components/Player/PlayerCard";
 
 export default function GameLayout({
   children,
@@ -38,33 +39,7 @@ export default function GameLayout({
           </header>
 
           {/* Player Card */}
-          <section className="flex items-center-safe justify-around gap-4 text-lg font-bold">
-            <section className="flex flex-col items-center-safe justify-center-safe">
-              <Image
-                src="/boy-profile.png"
-                alt="Profile image"
-                width={100}
-                loading="lazy"
-                height={100}
-                className="rounded-full bg-seconday p-1"
-              />
-              <p>Nikhil</p>
-              <p>X</p>
-            </section>
-            <p className="-mt-9">Wrisus</p>
-            <section className="flex flex-col items-center-safe justify-center-safe">
-              <Image
-                src="/boy-profile.png"
-                alt="Profile image"
-                width={100}
-                loading="lazy"
-                height={100}
-                className="rounded-full bg-seconday p-1"
-              />
-              <p>Suraj</p>
-              <p>X</p>
-            </section>
-          </section>
+          <PlayerCard />
 
           {/* Main children content */}
           {children}
