@@ -57,7 +57,7 @@ export default function WaitingPage() {
         <p>
           👥 <span className="font-semibold">{onlinePlayers}</span> online
         </p>
-        <p>
+        <p hidden={countdown < 0}>
           ⚡ Auto-match in
           <span className="text-orange-400 font-medium"> {countdown}s</span>
         </p>
