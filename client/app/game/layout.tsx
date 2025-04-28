@@ -16,7 +16,6 @@ export default function GameLayout({
           {/* Header Section */}
           <header className="flex flex-col items-center mystery-quest-regular font-extralight">
             {/* Wrapper to align text and image */}
-            {/* Tic:TacToe title */}
             <h1 className="text-5xl flex justify-center items-center text-white whitespace-nowrap">
               Tic
               <span className="text-orange-400 relative">

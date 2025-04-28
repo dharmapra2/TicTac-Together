@@ -1,12 +1,54 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function GameSideBar() {
-  const messages = Array.from({ length: 23 }, (_, index) => ({
-    userName: `Xyz${index + 1}`,
-    msg: "Hi, this is a test message.",
-    side: index % 2 === 0 ? "left" : "right", // Alternate sides
-    imgUrl: "/boy-profile.png", // Same image for now, you can make different if you want
-  }));
+  const router = useRouter();
+  const [messages, setMessages] = useState(
+    Array.from({ length: 23 }, (_, index) => ({
+      userName: `Xyz${index + 1}`,
+      msg: "Hi, this is a test message.",
+      side: index % 2 === 0 ? "left" : "right",
+      imgUrl: "/boy-profile.png",
+    }))
+  );
+  const [newMessage, setNewMessage] = useState("");
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleSendMessage = () => {
+    if (newMessage.trim() === "") return;
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        userName: "You",
+        msg: newMessage,
+        side: "right",
+        imgUrl: "/boy-profile.png",
+      },
+    ]);
+    setNewMessage("");
+  };
+
+  useEffect(() => {
+    // Scroll to bottom whenever messages change
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+  function handleLeaveRoom() {
+    router.push(`/dashboard`);
+  }
 
   return (
     <aside className="bg-card p-4 w-full md:w-[25%] h-full rounded-md flex flex-col text-white shadow-lg gap-2">
@@ -16,6 +58,7 @@ export default function GameSideBar() {
           src="/boy-profile.png"
           alt="Profile"
           width={64}
+          loading="lazy"
           height={64}
           className="rounded-full bg-orange-300 p-1"
         />
@@ -36,7 +79,10 @@ export default function GameSideBar() {
       {/* Chat Area */}
       <section className="flex flex-col bg-transparent flex-grow gap-2 overflow-hidden">
         {/* Chat Messages */}
-        <div className="flex flex-col gap-3 p-3 overflow-y-auto flex-grow scrollbar-thin scrollbar-thumb-gray-700">
+        <div
+          ref={chatContainerRef}
+          className="flex flex-col gap-3 p-3 overflow-y-auto flex-grow scrollbar-thin scrollbar-thumb-gray-700"
+        >
           {messages.map(({ userName, msg, side, imgUrl }, index) => (
             <div
               key={index}
@@ -49,6 +95,7 @@ export default function GameSideBar() {
                   src={imgUrl}
                   alt="Profile"
                   width={32}
+                  loading="lazy"
                   height={32}
                   className="rounded-full bg-gray-500 p-0.5"
                 />
@@ -70,6 +117,7 @@ export default function GameSideBar() {
                   src={imgUrl}
                   alt="Profile"
                   width={32}
+                  loading="lazy"
                   height={32}
                   className="rounded-full bg-gray-500 p-0.5"
                 />
@@ -80,20 +128,30 @@ export default function GameSideBar() {
 
         {/* Input Area */}
         <div className="p-3 border-t border-gray-700 flex items-center gap-2">
-          <input
+          <textarea
             name="msg"
             id="msg"
-            placeholder="Say something..."
-            className="flex-grow bg-transparent border border-gray-600 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-orange-400"
+            placeholder="Type your message..."
+            rows={2}
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="flex-grow bg-transparent border border-gray-600 rounded-2xl px-4 py-2 text-sm resize-none focus:outline-none focus:border-orange-400"
           />
-          <button className="bg-orange-400 hover:bg-orange-500 transition text-white px-4 py-2 rounded-full text-sm font-bold">
+          <button
+            onClick={handleSendMessage}
+            className="bg-orange-400 hover:bg-orange-500 transition text-white px-4 py-2 rounded-full text-sm font-bold"
+          >
             Send
           </button>
         </div>
       </section>
 
       {/* Leave Room Button */}
-      <button className="bg-red-500 hover:bg-red-600 transition text-white font-bold py-2 rounded-lg">
+      <button
+        className="bg-red-500 hover:bg-red-600 transition text-white font-bold py-2 rounded-lg cursor-pointer"
+        onClick={handleLeaveRoom}
+      >
         Leave Room
       </button>
     </aside>
