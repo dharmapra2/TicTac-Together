@@ -89,8 +89,8 @@ function Page() {
             ? "It's a Draw!"
             : `${winner} wins!`
           : turn
-          ? "Your turn (X)"
-          : "Waiting for opponent (O)"}
+            ? "Your turn (X)"
+            : "Waiting for opponent (O)"}
       </p>
 
       <section

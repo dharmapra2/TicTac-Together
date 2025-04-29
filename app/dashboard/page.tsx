@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Bell } from "lucide-react"; // or use Heroicons/FontAwesome
 
 export default function DashboardPage() {
@@ -19,7 +19,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       {/* 🔔 Notification Icon for Invite Modal */}
       <button
         className="block laptop:hidden absolute top-6 right-6 p-2 bg-card rounded-full hover:bg-gray-700 transition"
@@ -95,6 +95,6 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
-    </>
+    </Suspense>
   );
 }
