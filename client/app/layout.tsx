@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SocketProvider } from "@/utils/context/SocketContext";
+import UserNotifications from "@/components/Notification/UserNotifications";
 // import PreventRefreshProvider from "@/utils/hooks/PreventRefreshProvider";
 
 export const metadata: Metadata = {
@@ -19,7 +21,11 @@ export default function RootLayout({
       >
         <main className="h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6">
           {/* <PreventRefreshProvider shouldPrevent={true}> */}
-          {children}
+          <SocketProvider>
+            <UserNotifications />
+
+            {children}
+          </SocketProvider>
           {/* </PreventRefreshProvider> */}
         </main>
       </body>

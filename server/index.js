@@ -16,45 +16,77 @@ const io = new Server(httpServer, {
 });
 
 // ---- Socket Events ----
+const activeUsers = new Map(); // socket.id -> user data
+
 io.on("connection", (socket) => {
   console.log(`🟢 New client connected: ${socket.id}`);
 
-  // Emit welcome message
-  socket.emit("connected", { message: "Welcome to TicTac Together!" });
+  // Handle user login/join
+  socket.on("user_joined", (data) => {
+    // Store user data with socket ID
+    activeUsers.set(socket.id, {
+      username: data.username,
+      userId: data.userId || generateUniqueUserId(), // Generate if not provided
+      socketId: socket.id,
+    });
 
-  // Handle disconnect
+    // Notify others (excluding the current user)
+    socket.broadcast.emit("new_user_notification", {
+      message: `${data.username} has joined the game!`,
+      username: data.username,
+      userId: activeUsers.get(socket.id).userId,
+      isReconnect: false,
+    });
+
+    // Send existing users to the new user
+    const usersArray = Array.from(activeUsers.values()).filter(
+      (user) => user.socketId !== socket.id
+    );
+    socket.emit("existing_users", usersArray);
+  });
+
+  // Handle disconnection
   socket.on("disconnect", () => {
-    console.log(`🔴 Client disconnected: ${socket.id}`);
+    const user = activeUsers.get(socket.id);
+    if (user) {
+      console.log(`🔴 Client disconnected: ${user.username}`);
+      activeUsers.delete(socket.id);
+
+      // Notify others only after a delay (to account for reconnection)
+      setTimeout(() => {
+        if (!activeUsers.has(socket.id)) {
+          // If not reconnected
+          socket.broadcast.emit("user_left", {
+            userId: user.userId,
+            username: user.username,
+          });
+        }
+      }, 5000); // 5 second grace period for reconnection
+    }
+  });
+
+  // Handle explicit logout
+  socket.on("user_left", () => {
+    const user = activeUsers.get(socket.id);
+    if (user) {
+      activeUsers.delete(socket.id);
+      socket.broadcast.emit("user_left", {
+        userId: user.userId,
+        username: user.username,
+      });
+    }
   });
 });
 
+function generateUniqueUserId() {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+}
+
 app.get("/", (req, res) => {
-  // Serve HTML with env value injected
-  const envValue = process.env.PORT;
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Socket.IO Test</title>
-        <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
-      </head>
-      <body>
-        <h1>Socket.IO Client</h1>
-        <div>Env Value: <span id="envValue">${envValue}</span></div>
-        <script>
-          const socket = io("http://localhost:${PORT}");
-
-          socket.on("connected", (data) => {
-            console.log("📩 Server:", data.message);
-          });
-
-          // Accessing the environment value in the client-side JS
-          const envValueFromHtml = document.getElementById('envValue').innerText;
-          console.log("Env value from HTML:", envValueFromHtml);
-        </script>
-      </body>
-    </html>
-  `);
+  res.send("TicTacToe Socket.IO Server is running");
 });
 
 httpServer.listen(PORT, () => {
