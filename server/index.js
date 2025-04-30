@@ -1,11 +1,11 @@
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 
-dotenv.config(); // Load .env variables
+dotenv.config({ path: ".env.local" });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3020;
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
