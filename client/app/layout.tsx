@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { SocketProvider } from "@/utils/context/SocketContext";
+import { AppProviders } from "@/utils/context/app-providers";
 import UserNotifications from "@/components/Notification/UserNotifications";
-// import PreventRefreshProvider from "@/utils/hooks/PreventRefreshProvider";
+// import UserNotifications from "@/components/Notification/UserNotifications";
 
 export const metadata: Metadata = {
   title: "Tic-Tac-Toe",
@@ -14,19 +14,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("rerender RootLayout");
+
   return (
     <html lang="en">
       <body
         className={`antialiased bg-seconday flex justify-center items-center`}
       >
         <main className="h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6">
-          {/* <PreventRefreshProvider shouldPrevent={true}> */}
-          <SocketProvider>
+          <AppProviders>
             <UserNotifications />
 
             {children}
-          </SocketProvider>
-          {/* </PreventRefreshProvider> */}
+          </AppProviders>
         </main>
       </body>
     </html>

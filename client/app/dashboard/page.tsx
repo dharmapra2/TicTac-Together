@@ -11,6 +11,7 @@ export default function DashboardPage() {
     "Sam invited you to a game",
     "You won against Tina 🎉",
   ];
+  console.log("rerender DashboardPage");
 
   const invites = [
     { from: "Ravi", gameId: "#TTT987" },

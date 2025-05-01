@@ -16,64 +16,63 @@ const io = new Server(httpServer, {
 });
 
 // ---- Socket Events ----
-const activeUsers = new Map(); // socket.id -> user data
+const activeUsers = new Map(); // userId -> user data
 
 io.on("connection", (socket) => {
-  console.log(`🟢 New client connected: ${socket.id}`);
+  console.log(`🟢 New connection: ${socket.id}`);
 
-  // Handle user login/join
   socket.on("user_joined", (data) => {
-    // Store user data with socket ID
-    activeUsers.set(socket.id, {
-      username: data.username,
-      userId: data.userId || generateUniqueUserId(), // Generate if not provided
+    console.log(data);
+    const userData = {
+      ...data,
       socketId: socket.id,
-    });
+      lastSeen: new Date(),
+    };
 
-    // Notify others (excluding the current user)
-    socket.broadcast.emit("new_user_notification", {
-      message: `${data.username} has joined the game!`,
-      username: data.username,
-      userId: activeUsers.get(socket.id).userId,
-      isReconnect: false,
-    });
+    // Update or add user
+    activeUsers.set(data.userId, userData);
 
-    // Send existing users to the new user
-    const usersArray = Array.from(activeUsers.values()).filter(
-      (user) => user.socketId !== socket.id
+    if (data.isReconnect) {
+      console.log(`↩️ User reconnected: ${data.username}`);
+      socket.broadcast.emit("user_reconnected", {
+        userId: data.userId,
+        username: data.username,
+      });
+    } else {
+      console.log(`👋 New user joined: ${data.username}`);
+      socket.broadcast.emit("new_user_notification", {
+        userId: data.userId,
+        username: data.username,
+        message: `${data.username} joined the game`,
+      });
+    }
+
+    // Send active users (excluding current)
+    const others = Array.from(activeUsers.values()).filter(
+      (u) => u.userId !== data.userId
     );
-    socket.emit("existing_users", usersArray);
+    socket.emit("active_users", others);
   });
 
-  // Handle disconnection
   socket.on("disconnect", () => {
-    const user = activeUsers.get(socket.id);
-    if (user) {
-      console.log(`🔴 Client disconnected: ${user.username}`);
-      activeUsers.delete(socket.id);
+    const user = Array.from(activeUsers.values()).find(
+      (u) => u.socketId === socket.id
+    );
 
-      // Notify others only after a delay (to account for reconnection)
+    if (user) {
+      console.log(`🔴 Disconnected: ${user.username}`);
+
+      console.log(activeUsers, socket.id, user?.socketId === socket.id);
+      // Set timeout to handle reconnection
       setTimeout(() => {
-        if (!activeUsers.has(socket.id)) {
-          // If not reconnected
+        if (user?.socketId === socket.id) {
+          activeUsers.delete(user.userId);
           socket.broadcast.emit("user_left", {
             userId: user.userId,
             username: user.username,
           });
         }
-      }, 5000); // 5 second grace period for reconnection
-    }
-  });
-
-  // Handle explicit logout
-  socket.on("user_left", () => {
-    const user = activeUsers.get(socket.id);
-    if (user) {
-      activeUsers.delete(socket.id);
-      socket.broadcast.emit("user_left", {
-        userId: user.userId,
-        username: user.username,
-      });
+      }, 10000); // 10 second grace period
     }
   });
 });

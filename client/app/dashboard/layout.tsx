@@ -7,6 +7,8 @@ export default function DashBoardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("rerender DashboardLayout");
+
   return (
     <React.Fragment>
       {/* left section */}
@@ -25,7 +27,7 @@ export default function DashBoardLayout({
               className="rounded-full bg-orange-300 p-1"
             />
             <div>
-              <h4 className="text-2xl font-semibold">Alex</h4>
+              <h4 className="text-2xl font-semibold">Jeje</h4>
               <p className="text-sm text-gray-300">
                 Player ID: #<span>98213</span>
               </p>

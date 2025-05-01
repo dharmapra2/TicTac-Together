@@ -1,40 +1,30 @@
 "use client";
 
 import { redirect } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import Image from "next/image";
-import { useSocketContext } from "@/utils/context/SocketContext";
+import { useUser } from "@/utils/context/user";
 
 export default function Page() {
   const [isPending, startTransition] = useTransition();
 
-  const socket = useSocketContext();
-  const [userId, setUserId] = useState<string | null>(null);
+  const { setUser } = useUser();
 
   // Generate or retrieve user ID
   useEffect(() => {
     const storedUserId = localStorage.getItem("tictactoe_userId");
-    if (storedUserId) {
-      setUserId(storedUserId);
-    } else {
+    if (!storedUserId) {
       const newUserId =
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 15);
       localStorage.setItem("tictactoe_userId", newUserId);
-      setUserId(newUserId);
     }
   }, []);
 
   async function handleSubmit(formData: FormData) {
     const username = formData.get("username") as string;
 
-    if (socket && userId) {
-      socket.emit("user_joined", {
-        username,
-        userId, // Include the persistent user ID
-        timestamp: new Date().toISOString(),
-      });
-    }
+    setUser(username); // This will handle all socket communication
 
     startTransition(() => {
       redirect("/dashboard");
@@ -59,6 +49,7 @@ export default function Page() {
             alt="Multiplayer background"
             width={230}
             height={230}
+            priority={true}
             className="w-11/12 md:w-full h-auto bg-blend-color-dodge"
           />
         </div>
