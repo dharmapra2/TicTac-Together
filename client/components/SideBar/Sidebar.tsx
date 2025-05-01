@@ -1,7 +1,13 @@
 import Image from "next/image";
 import GameActions from "@/components/SideBar/SideBarActions";
+import { getServerUserData } from "@/utils/actions/user-server";
 
-export default function Sidebar() {
+export default async function Sidebar() {
+  const {
+    userId,
+    username,
+  }: { userId: string | null; username: string | null } =
+    await getServerUserData();
   const availablePlayers = ["Sam", "Tina", "John"];
   const inGamePlayers = ["Michael", "Ava"];
   const waitingGames = [
@@ -22,8 +28,8 @@ export default function Sidebar() {
           className="rounded-full bg-orange-300 p-1"
         />
         <div>
-          <h4 className="text-xl font-semibold">Alex</h4>
-          <p className="text-sm text-gray-300">Player ID: #98213</p>
+          <h4 className="text-xl font-semibold">{username ?? "Alex"}</h4>
+          <p className="text-sm text-gray-300">Player ID: #{userId ?? 98213}</p>
         </div>
       </div>
       {/* Game Action */}

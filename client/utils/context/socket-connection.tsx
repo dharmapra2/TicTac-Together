@@ -30,14 +30,15 @@ export function SocketConnectionProvider({
       reconnectionDelay: 1000,
       autoConnect: true,
     });
-
-    setState({
-      socket: socketInstance,
-      isInitialized: true,
-    });
+    if (socketInstance) {
+      setState({
+        socket: socketInstance,
+        isInitialized: true,
+      });
+    }
 
     return () => {
-      socketInstance.disconnect();
+      if (socketInstance) socketInstance.disconnect();
     };
   }, []);
 
