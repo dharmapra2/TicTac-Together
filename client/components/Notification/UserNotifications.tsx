@@ -37,6 +37,7 @@ export default function UserNotifications() {
     };
 
     const handleUserLeft = (data: { userId: string }) => {
+      console.log(`handleUserLeft`, data);
       setNotifications((prev) => prev.filter((n) => n.userId !== data.userId));
     };
 

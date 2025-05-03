@@ -1,16 +1,28 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import React from "react";
+import React, { useRef } from "react";
 
 function GameActions() {
+  const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const gameId = searchParams.get("gameId");
 
   function handleCreateGame() {
+    console.log("handleCreateGame");
     const gameId = crypto.randomUUID(); // or use generateShortId()
     router.push(`/dashboard/waiting?gameId=${gameId}`);
+  }
+
+  function handleJoinGameById() {
+    const inputVal = inputRef.current;
+    if (inputVal) {
+      const enteredId = inputVal?.value?.trim();
+      router.push(`/dashboard/waiting?gameId=${enteredId}`);
+    } else {
+      alert("Please enter a valid Game ID.");
+    }
   }
 
   function handleCancelGame() {
@@ -33,6 +45,18 @@ function GameActions() {
             onClick={handleCreateGame}
           >
             Create Game
+          </button>
+          <input
+            type="text"
+            ref={inputRef}
+            placeholder="Enter Game ID"
+            className="border p-2 rounded-lg text-sm"
+          />
+          <button
+            className="bg-gray-500 hover:bg-gray-600 transition-colors text-white py-2 rounded-lg text-sm font-medium"
+            onClick={handleJoinGameById}
+          >
+            Join Game by ID
           </button>
           <button className="bg-gray-700 hover:bg-gray-600 transition-colors text-white py-2 rounded-lg text-sm font-medium">
             Join Random Game

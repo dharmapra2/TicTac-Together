@@ -59,6 +59,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   // Stable user ID generation/retrieval
   const getOrCreateUserId = useCallback(async (): Promise<string | null> => {
     try {
+      console.log(`getOrCreateUserId called`);
       const storedUserId = getClientStorage("tictactoe_userId");
       if (storedUserId) return storedUserId;
 

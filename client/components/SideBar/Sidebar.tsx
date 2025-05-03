@@ -1,6 +1,13 @@
 import Image from "next/image";
-import GameActions from "@/components/SideBar/SideBarActions";
 import { getServerUserData } from "@/utils/actions/user-server";
+import dynamic from "next/dynamic";
+
+const GameActions = dynamic(
+  () => import("@/components/SideBar/SideBarActions"),
+  {
+    loading: () => <p>Loading...</p>,
+  }
+);
 
 export default async function Sidebar() {
   const {

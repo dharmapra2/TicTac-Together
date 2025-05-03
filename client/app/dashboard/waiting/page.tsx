@@ -9,7 +9,7 @@ export default function WaitingPage() {
   const gameId = searchParams.get("gameId");
 
   const [onlinePlayers, setOnlinePlayers] = useState(0);
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(60);
   const [copySuccess, setCopySuccess] = useState("");
 
   useEffect(() => {
@@ -35,11 +35,11 @@ export default function WaitingPage() {
   }, [gameId, router]);
 
   // To resolve the render issue we created new useEffect for countdown reaching zero
-  useEffect(() => {
-    if (countdown === 1 && gameId) {
-      router.push(`/game/${gameId}`);
-    }
-  }, [countdown, gameId, router]);
+  // useEffect(() => {
+  //   if (countdown === 1 && gameId) {
+  //     router.push(`/game/${gameId}`);
+  //   }
+  // }, [countdown, gameId, router]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(gameId || "");
