@@ -70,3 +70,7 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans), sans-serif;
 } */
+.cl-avatarBox {
+  width: 2.75rem;
+  height: 2.75rem;
+}

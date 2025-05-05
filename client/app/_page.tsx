@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { useEffect, useTransition } from "react";
 import Image from "next/image";
 import { useUser } from "@/utils/context/user";
+import { UserButton, SignInButton } from "@clerk/nextjs";
+import { Authenticated, Unauthenticated } from "convex/react";
 
 export default function Page() {
   const [isPending, startTransition] = useTransition();
@@ -86,6 +88,12 @@ export default function Page() {
       <p className="text-gray-400 text-sm mt-6">
         Ready to challenge your friends?
       </p>
+      <Authenticated>
+        <UserButton showName />
+      </Authenticated>
+      <Unauthenticated>
+        <SignInButton />
+      </Unauthenticated>
     </section>
   );
 }

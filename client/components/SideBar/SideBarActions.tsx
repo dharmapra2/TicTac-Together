@@ -12,21 +12,21 @@ function GameActions() {
   function handleCreateGame() {
     console.log("handleCreateGame");
     const gameId = crypto.randomUUID(); // or use generateShortId()
-    router.push(`/dashboard/waiting?gameId=${gameId}`);
+    router.push(`/waiting?gameId=${gameId}`);
   }
 
   function handleJoinGameById() {
     const inputVal = inputRef.current;
     if (inputVal) {
       const enteredId = inputVal?.value?.trim();
-      router.push(`/dashboard/waiting?gameId=${enteredId}`);
+      router.push(`/waiting?gameId=${enteredId}`);
     } else {
       alert("Please enter a valid Game ID.");
     }
   }
 
   function handleCancelGame() {
-    router.push(`/dashboard`);
+    router.push(`/`);
   }
   return (
     <section className="bg-seconday p-4 rounded-xl shadow-md flex flex-col gap-4">

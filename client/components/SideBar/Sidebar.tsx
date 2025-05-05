@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { getServerUserData } from "@/utils/actions/user-server";
 import dynamic from "next/dynamic";
 
 const GameActions = dynamic(
@@ -9,12 +7,12 @@ const GameActions = dynamic(
   }
 );
 
+const PlayerInfo = dynamic(() => import("@/components/Player/PlayerInfo"), {
+  loading: () => <p>Loading...</p>,
+  ssr: true,
+});
+
 export default async function Sidebar() {
-  const {
-    userId,
-    username,
-  }: { userId: string | null; username: string | null } =
-    await getServerUserData();
   const availablePlayers = ["Sam", "Tina", "John"];
   const inGamePlayers = ["Michael", "Ava"];
   const waitingGames = [
@@ -26,19 +24,7 @@ export default async function Sidebar() {
   return (
     <aside className="bg-card p-4 w-[25%] h-full rounded-md flex flex-col text-white shadow-lg gap-6">
       {/* Player Info */}
-      <div className="flex items-center gap-4">
-        <Image
-          src="/boy-profile.png"
-          alt="Profile"
-          width={64}
-          height={64}
-          className="rounded-full bg-orange-300 p-1"
-        />
-        <div>
-          <h4 className="text-xl font-semibold">{username ?? "Alex"}</h4>
-          <p className="text-sm text-gray-300">Player ID: #{userId ?? 98213}</p>
-        </div>
-      </div>
+      <PlayerInfo />
       {/* Game Action */}
       <GameActions />
 
