@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AppProviders } from "@/utils/context/app-providers";
-import UserNotifications from "@/components/Notification/UserNotifications";
 import ConvexClientProvider from "@/utils/context/convex-client-provider";
 // import UserNotifications from "@/components/Notification/UserNotifications";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -28,11 +26,11 @@ export default function RootLayout({
         >
           <ConvexClientProvider>
             <main className="h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6">
-              <AppProviders>
-                <UserNotifications />
+              {/* <AppProviders> */}
+              {/* <UserNotifications /> */}
 
-                {children}
-              </AppProviders>
+              {children}
+              {/* </AppProviders> */}
             </main>
           </ConvexClientProvider>
         </body>
