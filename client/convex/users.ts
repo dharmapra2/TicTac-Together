@@ -173,7 +173,6 @@ export const getAvilablePlayers = query({
         )
       )
       .collect();
-    console.log(users);
     return users;
   },
 });

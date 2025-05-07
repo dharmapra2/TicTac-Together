@@ -57,7 +57,7 @@ http.route({
             status: "active",
           });
           break;
-        case "session.ended":
+        case "session.removed":
           await ctx.runMutation(internal.users.setUserOnlineOffline, {
             tokenIdentifier: `${process.env.CLERK_APP_DOMAIN}|${result.data.user_id}`,
             isOnline: false,
