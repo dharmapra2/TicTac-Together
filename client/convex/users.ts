@@ -154,3 +154,73 @@ export const getGroupMembers = query({
     return groupMembers;
   },
 });
+
+export const getAvilablePlayers = query({
+  args: {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("Unauthorized");
+    }
+
+    const users = await ctx.db
+      .query("users")
+      .filter((q) =>
+        q.and(
+          q.neq(q.field("tokenIdentifier"), identity.tokenIdentifier),
+          q.eq(q.field("status"), "active")
+        )
+      )
+      .collect();
+    console.log(users);
+    return users;
+  },
+});
+
+export const getInGamePlayers = query({
+  args: {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("Unauthorized");
+    }
+
+    const users = await ctx.db
+      .query("users")
+      .filter((q) =>
+        q.and(
+          q.neq(q.field("tokenIdentifier"), identity.tokenIdentifier),
+          q.eq(q.field("status"), "Playing")
+        )
+      )
+      .collect();
+    return users;
+  },
+});
+
+export const getWaitingPlayers = query({
+  args: {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("Unauthorized");
+    }
+
+    const users = await ctx.db
+      .query("users")
+      .filter((q) =>
+        q.and(
+          q.neq(q.field("tokenIdentifier"), identity.tokenIdentifier),
+          q.or(
+            q.eq(q.field("status"), "Waiting"),
+            q.eq(q.field("status"), "InGame")
+          )
+        )
+      )
+      .collect();
+    return users;
+  },
+});

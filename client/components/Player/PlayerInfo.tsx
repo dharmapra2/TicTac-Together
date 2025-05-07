@@ -4,13 +4,13 @@ import { UserButton } from "@clerk/nextjs";
 import { useConvexAuth, useQuery } from "convex/react";
 import Image from "next/image";
 import React, { useRef } from "react";
+import SkeletonPlayerInfoLoader from "../loader/SkeletonPlayerInfoLoader";
 
 function PlayerInfo() {
   const { isAuthenticated } = useConvexAuth();
   const me = useQuery(api.users.getMe, isAuthenticated ? undefined : "skip");
 
-  const imageUrl: string =
-    me?.has_image && me?.image ? me.image : "/boy-profile.png";
+  // const imageUrl: string = me?.has_image && me?.image ? me.image : "/boy-profile.png";
 
   // Ref to trigger the UserButton click
   const buttonRef = useRef<HTMLDivElement>(null);
@@ -20,6 +20,10 @@ function PlayerInfo() {
     buttonRef.current?.click();
   };
 
+  if (!me) {
+    return <SkeletonPlayerInfoLoader />;
+  }
+
   return (
     <div className="flex items-center gap-4">
       <div
@@ -27,10 +31,10 @@ function PlayerInfo() {
         onClick={handleClick}
       >
         <Image
-          src={imageUrl}
+          src={"/boy-profile.png"}
           alt="Profile"
           fill
-          className={`rounded-full object-cover bg-orange-300 ${!me?.has_image && "p-1"}`}
+          className={`rounded-full object-cover bg-orange-300 p-1`}
         />
         <div className="absolute inset-0 opacity-0" ref={buttonRef}>
           <UserButton

@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import SkeletonPlayerInfoLoader from "../loader/SkeletonPlayerInfoLoader";
 
 const GameActions = dynamic(
   () => import("@/components/SideBar/SideBarActions"),
@@ -8,7 +9,7 @@ const GameActions = dynamic(
 );
 
 const PlayerInfo = dynamic(() => import("@/components/Player/PlayerInfo"), {
-  loading: () => <p>Loading...</p>,
+  loading: () => <SkeletonPlayerInfoLoader />,
   ssr: true,
 });
 

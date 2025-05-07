@@ -1,0 +1,15 @@
+.sidebar-items-loading-main {
+    @apply flex flex-col items-center transition-colors pt-4 w-full;
+}
+
+.sidebar-items-loading-round {
+    @apply h-9 w-14 bg-dark-grey-15 mt-3 animate-pulse rounded-full;
+}
+
+.card-loader{
+    @apply bg-grey-15 rounded-lg border-2 gap-2 w-[98%] flex flex-col p-2 h-[110px] animate-pulse
+}
+
+.card-loader-container{
+    @apply grid grid-cols-3 gap-2 pr-10 
+}

@@ -3,21 +3,13 @@
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import React from "react";
+import SkeletonNormalLoader from "../loader/SkeletonNormalLoader";
 
 function PlayerHeader() {
   const me = useQuery(api.users.getMe);
 
   if (!me) {
-    return (
-      <div>
-        <h4 className="text-2xl font-semibold animate-pulse">Loading...</h4>
-        <p className="text-sm text-gray-300 animate-pulse">Player ID: #---</p>
-        <p className="text-sm text-gray-400 mt-1 animate-pulse">
-          Wins: <span className="text-white font-bold">-</span> | Losses:
-          <span className="text-white font-bold">-</span>
-        </p>
-      </div>
-    );
+    return <SkeletonNormalLoader lineWidths={[35, 50, 75]} />;
   }
 
   return (

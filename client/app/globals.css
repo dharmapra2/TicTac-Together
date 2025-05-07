@@ -18,6 +18,12 @@ body {
   --color-card: #3b0a60;
   --color-background: #ffffff;
   --color-foreground: #171717;
+  --color-dark-grey: "#606060";
+  --color-dark-grey-15: "#E7E7E7";
+  --color-grey: "#8e8e8e";
+  --color-light-grey: "#e8e4ec";
+  --color-slate-grey: "#94A3B8";
+  --color-grey-15: "#EEEEEE";
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 

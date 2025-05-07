@@ -47,7 +47,7 @@ export default function GameSideBar() {
     }
   };
   function handleLeaveRoom() {
-    router.push(`/dashboard`);
+    router.push(`/`);
   }
 
   return (

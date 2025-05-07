@@ -2,6 +2,11 @@ import Image from "next/image";
 import React from "react";
 import GameSideBar from "@/components/Game/GameSideBar";
 import PlayerCard from "@/components/Player/PlayerCard";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "🎯 Game",
+};
 
 export default function GameLayout({
   children,
