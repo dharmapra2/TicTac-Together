@@ -4,7 +4,6 @@ import { AppProviders } from "@/utils/context/app-providers";
 import UserNotifications from "@/components/Notification/UserNotifications";
 import ConvexClientProvider from "@/utils/context/convex-client-provider";
 // import UserNotifications from "@/components/Notification/UserNotifications";
-import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Tic-Tac-Toe",
@@ -19,24 +18,18 @@ export default function RootLayout({
   console.log("rerender RootLayout");
 
   return (
-    <ClerkProvider
-      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-    >
-      <html lang="en">
-        <body
-          className={`antialiased bg-seconday flex justify-center items-center`}
-        >
-          <ConvexClientProvider>
-            <main className="h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6">
-              <AppProviders>
-                <UserNotifications />
+    <html lang="en">
+      <body
+        className={`antialiased bg-seconday flex justify-center items-center`}
+      >
+        <main className="h-[90%] w-[90%] text-white rounded-xl flex flex-row justify-between items-center gap-6">
+          <AppProviders>
+            <UserNotifications />
 
-                {children}
-              </AppProviders>
-            </main>
-          </ConvexClientProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+            {children}
+          </AppProviders>
+        </main>
+      </body>
+    </html>
   );
 }
