@@ -1,0 +1,11 @@
+type Query {
+  getCustomerToken(email: String!, password: String!): String
+  getCurrentLoggedInUser: Customer
+}
+type Customer {
+  id: ID!
+  firstName: String!
+  lastName: String
+  email: String!
+  profileImageURL: String
+}
