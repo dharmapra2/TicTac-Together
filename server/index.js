@@ -29,27 +29,17 @@ app.get("/", (req, res) => {
 // and our expressMiddleware function.
 app.use(
   "/graphql",
-  cors({
-    origin: true,
-    credentials: true,
-  }),
-  express.json(),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(await createApolloGraphqlServer(httpServer), {
     context: async ({ req }) => {
-      const authorizationHeader = req.headers.authorization;
-
-      if (authorizationHeader && authorizationHeader.startsWith("Bearer ")) {
-        const token = authorizationHeader.split(" ")[1];
-        console.log(`token : ${token}`);
-
+      const token = req.headers.authorization?.split(" ")[1];
+      if (token) {
         try {
           const user = new GlobalService().decodeJWTToken(token);
           return { user };
         } catch (error) {
-          console.error(`Error decoding token: ${error}`);
-          return {};
+          console.error("Token error:", error);
         }
       }
 

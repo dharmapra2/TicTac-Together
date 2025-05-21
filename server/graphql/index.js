@@ -1,39 +1,46 @@
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import { typeDefs, resolvers } from "./schema.mjs";
 import { WebSocketServer } from "ws";
-import { useServer } from "graphql-ws/use/ws";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+import { typeDefs, resolvers } from "./schema.mjs";
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageProductionDefault,
 } from "@apollo/server/plugin/landingPage/default";
+import GlobalService from "../Services/GlobalService.js";
+import { useServer } from 'graphql-ws/use/ws';
 
 async function createApolloGraphqlServer(httpServer) {
-  // 1. Create WebSocket server
+  // Create WebSocket server
   const wsServer = new WebSocketServer({
     server: httpServer,
     path: "/graphql",
   });
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
-  // 2. WebSocket server cleanup
-  const serverCleanup = useServer({ schema }, wsServer);
 
-  const gqlServer = new ApolloServer({
-    typeDefs,
-    resolvers,
-    formatError: (formattedError, error) => {
-      if (formattedError?.extensions?.code === "UNAUTHENTICATED") {
-        return { message: "you must be logged in to query this schema" };
-      }
-      if (formattedError.message.startsWith("Database Error: ")) {
-        return { message: "Internal server error" };
-      }
-      // Otherwise return the formatted error. This error can also
-      // be manipulated in other ways, as long as it's returned.
-      return formattedError;
+  // WebSocket server cleanup
+  const serverCleanup = useServer(
+    {
+      schema,
+      context: async (ctx) => {
+        const token = ctx.connectionParams?.authorization?.split(" ")[1];
+        if (token) {
+          try {
+            const user = new GlobalService().decodeJWTToken(token);
+            return { user };
+          } catch (error) {
+            console.error("WS Token error:", error);
+          }
+        }
+        return {};
+      },
     },
+    wsServer
+  );
+
+  const server = new ApolloServer({
+    schema,
     plugins: [
       ApolloServerPluginDrainHttpServer({ httpServer }),
       {
@@ -45,14 +52,21 @@ async function createApolloGraphqlServer(httpServer) {
           };
         },
       },
-      ApolloServerPluginLandingPageLocalDefault({ footer: true }),
+      process.env.NODE_ENV === "production"
+        ? ApolloServerPluginLandingPageProductionDefault()
+        : ApolloServerPluginLandingPageLocalDefault({ footer: false }),
     ],
+    formatError: (error) => {
+      console.error("GraphQL Error:", error);
+      return {
+        message: error.message,
+        code: error.extensions?.code,
+      };
+    },
   });
 
-  // Ensure we wait for our server to start
-  await gqlServer.start();
-
-  return gqlServer;
+  await server.start();
+  return server;
 }
 
 export default createApolloGraphqlServer;

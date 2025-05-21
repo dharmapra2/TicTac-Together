@@ -10,7 +10,7 @@
   "author": "Dharma Pradhan",
   "license": "ISC",
   "dependencies": {
-    "@apollo/server": "^4.9.5",
+    "@apollo/server": "^4.12.0",
     "@graphql-tools/schema": "^9.0.19",
     "axios": "^1.9.0",
     "bcrypt": "^5.1.1",
@@ -22,7 +22,7 @@
     "graphql": "^16.11.0",
     "graphql-subscriptions": "^3.0.0",
     "graphql-tag": "^2.12.6",
-    "graphql-ws": "^6.0.4",
+    "graphql-ws": "^6.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.2",
     "nodemon": "^3.1.9",
