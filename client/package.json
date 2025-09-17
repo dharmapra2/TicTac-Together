@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@clerk/clerk-sdk-node": "^4.13.23",
-    "@clerk/nextjs": "^6.18.5",
+    "@clerk/nextjs": "^6.23.3",
     "convex": "^1.23.0",
     "framer-motion": "^12.9.2",
     "lucide-react": "^0.503.0",
